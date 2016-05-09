@@ -1,0 +1,181 @@
+/* PHP Template Compiler
+ * Styles for elements
+==============================================================================*/
+body {
+    background: #fff;
+    color: #000;
+    font: 12px/18px Arial, Helvetica, Verdana, sans-serif;
+    line-height: 1.2;
+    margin: 0 auto;
+    width: 1000px;
+}
+
+a,
+a:visited {
+    color: #06f;
+    text-decoration: none;
+}
+
+h1,
+h2,
+h3 { font-weight: bold; }
+h1 {
+    font-size: 18px;
+    margin: 15px 0 0;
+}
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+
+option { padding: 0 5px; }
+
+select {
+    border: 0;
+    border-radius: 4px;
+    margin: 1px 0;
+    padding: 2px 5px;
+    width: 100px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+p { margin: 10px 0; }
+
+/* Styles for header and menu
+==============================================================================*/
+#wrapper {
+    height: auto !important;
+    overflow: hidden;
+}
+
+.header {
+    background: #297377;
+    color: yellow;
+    display: inline-block;
+    font-size: 36px;
+    padding: 30px 0;
+    width: 100%;
+}
+
+.main-menu { background: #1a4b4e; }
+.menu      { display: inline-block; }
+.menu ul   {
+    background: #1f2024;
+    border-radius: 0 0 5px 5px;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 40px;
+    transition: opacity .25s ease .1s;
+    z-index: 10;
+}
+.menu ul li {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    transition: height .25s ease .1s;
+}
+.menu ul li a {
+    border: 0;
+    border-bottom: 1px solid #353539;
+    margin: 0;
+}
+.menu ul li:last-child a { border: 0; }
+.menu li {
+    float: left;
+    position: relative;
+}
+.menu li a {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    color: #fff;
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 28px;
+    margin: 6px 0;
+    padding: 0 14px;
+    text-shadow: 1px 1px 1px #000;
+    transition: color .2s ease-in-out;
+}
+.menu li:first-child a { border-left: 0; }
+.menu li:last-child a  { border-right: 0; }
+.menu li:hover > a     { color: #8fde62; }
+.menu li:hover > ul    { opacity: 1; }
+.menu li:hover > ul li {
+    height: 36px;
+    overflow: visible;
+    padding: 0;
+}
+
+/* Styles for page layout
+==============================================================================*/
+#layout-root {
+    position: relative;
+    height: auto !important;
+}
+#layout-center {
+    height: auto !important;
+    margin: 0 235px;
+    padding: 10px;
+    overflow: hidden;
+}
+#layout-left,
+#layout-right {
+    background: #88c3b0;
+    margin: 0 0 -9000px;
+    padding: 0 10px 9000px;
+    position: relative;
+    overflow: hidden;
+    width: 230px;
+}
+#layout-left        { float: left; }
+#layout-right       { float: right; }
+#layout-left li,
+#layout-right li    { margin-left: 5px; }
+#layout-left:after,
+#layout-right:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/* Styles for content
+==============================================================================*/
+.content { color: red; }
+.center  { text-align: center; }
+.justify { text-align: justify; }
+
+/* Footer
+==============================================================================*/
+.footer {
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    padding: 10px 30px;
+    position: relative;
+}
+
+.language,
+.valid {
+    margin: 10px 0;
+    width: 25%;
+}
+.valid             { float: right; }
+.valid-icon        { white-space: nowrap; }
+.valid-icon:before {
+    background: url(logos.jpg) no-repeat 80px 15px;
+    content: '';
+    display: inline;
+    display: inline-block;
+    height: 15px;
+    width: 80px;
+}
+.valid-icon-php:before     { background-position: 0 -60px; }
+.valid-icon-license:before { background-position: 0 -90px; }
