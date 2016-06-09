@@ -163,12 +163,10 @@ p { margin: 10px 0; }
 }
 
 .language,
-.valid {
-    margin: 10px 0;
-    width: 25%;
-}
-.valid             { float: right; }
-.valid-icon        { white-space: nowrap; }
+.valid { width: 25%; }
+.valid { float: right; margin: 10px 0 0; }
+.language { float: left; }
+.valid-icon { white-space: nowrap; }
 .valid-icon:before {
     background: url(logos.jpg) no-repeat 80px 15px;
     content: '';
@@ -177,5 +175,6 @@ p { margin: 10px 0; }
     height: 15px;
     width: 80px;
 }
-.valid-icon-php:before     { background-position: 0 -60px; }
-.valid-icon-license:before { background-position: 0 -90px; }
+.icon-php:before     { background-position: 0 -60px; }
+.icon-nosql:before   { background-position: 0 -75px; }
+.icon-license:before { background-position: 0 -90px; }

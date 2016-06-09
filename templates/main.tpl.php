@@ -1,5 +1,5 @@
 <?php
-# PHP Template Compiler v1.0
+# PHP Template Compiler v2.0
 # Copyright (c) 2016 Victor Nabatov greenray.spb@gmail.com
 # Main template
 die();?>
@@ -40,8 +40,9 @@ die();?>
 </div>
 <div class="footer">
     <div class="valid center">
-        <a href="http://www.php.net" class="valid-icon valid-icon-php"></a>
-        <a href="http://creativecommons.org/licenses/by-sa/4.0/" class="valid-icon valid-icon-license"></a>
+        <a href="http://www.php.net" class="valid-icon icon-php"></a>
+        <a href="http://creativecommons.org/licenses/by-sa/4.0/" class="valid-icon icon-license"></a>
+        <a href="http://en.wikipedia.org/wiki/NoSQL" class="valid-icon icon-nosql"></a>
     </div>
     <div class="language center">
         <p>__Change the language__</p>
@@ -53,6 +54,7 @@ die();?>
             </select>
         </form>
     </div>
+    <div class="center">Generator: {GENERATOR} {COPYRIGHT}</div>
 </div>
 </body>
 </html>

@@ -1,9 +1,9 @@
 <?php
 /**
- * PHP Template Compiler.
+ * PHP Template Compiler v2.0.
  */
 
-ini_set('display_errors', 1);   # Set this to 0 after testing
+ini_set('display_errors', 1);   # It is for testing
 
 /** Alias for DIRECTORY_SEPARATOR */
 define ('DS', DIRECTORY_SEPARATOR);
@@ -19,8 +19,11 @@ define ('LANGUAGES', ROOT.'languages'.DS);
 define ('STYLES',    ROOT.'css'.DS);
 /** Example templates */
 define ('TEMPLATES', ROOT.'templates'.DS);
+/** Generator */
+define('GENERATOR', 'template-compiler v2.0');
+/** Copyright */
+define('COPYRIGHT', '&copy; 2016 Greenray');
 
-//require_once 'tpl.class.php';
 require_once 'template.class.php';
 
 $options['cache_page'] = TRUE;
@@ -28,6 +31,7 @@ $options['cache_css']  = FALSE;
 $options['expired']    = 3600;
 $options['compact']    = TRUE;
 $options['language']   = 'english';
+$options['extension']  = '.tpl.php';
 
 $locales = glob(LANGUAGES.'*.php');
 if (!empty($_POST['language'])) {

@@ -1,5 +1,5 @@
 <?php
-# PHP Template Compiler v1.0
+# PHP Template Compiler v2.0
 # Translations into Spanish
 # Copyright (c) 2016 Victor Nabatov greenray.spb@gmail.com
 

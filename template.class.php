@@ -2,17 +2,17 @@
 /**
  * PHP Template Compiler.
  *
- * @version   1.0
+ * @version   2.0
  * @author    Victor Nabatov <greenray.spb@gmail.com>
  * @copyright (c) 2016 Victor Nabatov
  * @license   Creative Commons Attribution-ShareAlike 4.0 International
  * @file      template.class.php
  * @package   Template
- * @overview  Completely separated from php code.
- *            Handles special tags and replaces them with commands of the php interpreter.
+ * @overview  Handles special tags and replaces them with commands of the php interpreter.
  *            It is able recursively execute functions and directives:
  *            FOREACH, IF, ELSE, ELSEIF, SWITCH, CASE, BREAK, DEFAULT, INCLUDE, CONTINUE.
  *            There is a possibility of compressing and caching the result.
+ *            Completely separated from php code.
  *            Requires PHP 5.4+
  */
 
@@ -21,17 +21,17 @@ class TEMPLATE {
     /** @var string Template content */
     private $code = '';
 
-	/** @var string Name of the template file that is executing */
-	private $file = '';
+    /** @var string Name of the template file that is currently executing */
+    private $file = '';
 
-    /** @var array Current system locale */
-	private $translation = [];
+    /** @var array Languages */
+    private $languages = [];
 
-	/** @var integer Line of the template content */
-	private $line = 0;
+    /** @var integer Current line of the template content */
+    private $line = 0;
 
-	/** @var array Array of the template options */
-	private $options = [];
+    /** @var array Processing options */
+    private $options = [];
 
     /** @var array Template statements */
     private $statements = [
@@ -45,51 +45,59 @@ class TEMPLATE {
     /** @var array Temporary variable for code processing */
     private $temp = [];
 
-	/** @var array Array of the template variables */
-	public $vars = [];
+    /** @var array Template variables */
+    public $vars = [];
 
-	/**
-	 * Class constructor.
+    /**
+     * Class constructor.
      *
-	 * @param array $template Template file
-     * @param array $options  Template parser options
-	 */
-	public function __construct($template, $options = []) {
-		$this->options   = [
+     * @param array $template Template file
+     * @param array $options  Processing options. Default is empty
+     */
+    public function __construct($template, $options = []) {
+        $this->options   = [
             'compact'    => TRUE,
             'cache_page' => TRUE,
             'cache_css'  => TRUE,
             'expired'    => 600,
             'language'   => 'english'
-		];
+        ];
         $this->options = array_replace($this->options, $options);
         $lang = [];
 
         include LANGUAGES.$this->options['language'].'.php';
 
-        $this->translation = $lang;
+        $this->languages = $lang;
         $this->getTemplate($template);
-	}
+    }
 
     /**
-	 * Reads template.
+     * Reads template.
      *
-	 * @param string $template Template filename with full path
-	 */
-	private function getTemplate($template) {
+     * @param string $template Template filename with full path
+     */
+    private function getTemplate($template) {
         $this->file = $template;
-        $template   = basename($template).'.tpl.php';
+        $template   = basename($template).$this->options['extension'];
         if (file_exists(TEMPLATES.$template)) {
             $this->code = file_get_contents(TEMPLATES.$template);
-            #
-            # Remove php code from template
-            #
-            $this->code = preg_replace("#<\?php(.*?)\?>\n{1,}#is", '', $this->code);
+            if ($this->code) {
+                #
+                # Remove php code from template
+                #
+                $this->code = preg_replace("#<\?php(.*?)\?>\n{1,}#is", '', $this->code);
+            } else {
+                $this->error('Cannot read the template file '.$filename);
+                exit;
+            }
+        } else {
+            $this->error('Cannot find the template file '.$filename);
+            exit;
         }
-	}
+    }
 
     /**
-     * Sets a variables (plain or array) of the template.
+     * Sets variables (plain or array) for the template.
      *
      * @param mixed $var   Variable name
      * @param mixed $value Variable value
@@ -101,45 +109,52 @@ class TEMPLATE {
     }
 
     /**
-	 * Compiles the template file.
+     * Parses the template file.
      *
-	 * @return string Compiled template
-	 */
-	public function parse() {
+     * @return string Parsed template
+     */
+    public function parse() {
         $old_file = $this->file;
-		$old_line = $this->line;
-		$code = '';
+        $old_line = $this->line;
+        $code = '';
         #
-		# Get code stored in cache file
+        # Get code stored in cache file
         #
-        $result = ($this->options['cache_page']) ? $this->getFromCache($this->file) : FALSE;
-		if (!$result) {
+        $result = $this->options['cache_page'] ? $this->getFromCache($this->file) : FALSE;
+        if ($result === FALSE) {
             #
-			# Extract and parse template
+            # Extract and parse template
             #
             $this->line = 0;
-            $tpl   = [];
-            preg_match_all('#<!-- INCLUDE (.+?) -->#', $this->code, $match, PREG_SET_ORDER);
-            if (!empty($match)) {
-                foreach($match as $key => $file) {
-                    $data = file_get_contents(TEMPLATES.$file[1].'.tpl.php');
-                    $data = preg_replace("#<\?php(.*?)\?>\n{1,}#is", '', $data);
-                    $this->code = str_replace($file[0], $data, $this->code);
+            $tpl = [];
+            #
+            # The name of the include file without extension
+            #
+            preg_match_all('#<!-- INCLUDE (.+?) -->#', $this->code, $includes, PREG_SET_ORDER);
+            if (!empty($includes)) {
+                foreach($includes as $key => $file) {
+                    if (file_exists(TEMPLATES.$file[1].$this->options['extension'])) {
+                        $data = file_get_contents(TEMPLATES.$file[1].$this->options['extension']);
+                        $data = preg_replace("#<\?php(.*?)\?>\n{1,}#is", '', $data);
+                        $this->code = str_replace($file[0], $data, $this->code);
+                    } else {
+                        $this->error('Cannot find the template file '.$filename.' for including');
+                    }
                 }
             }
             $lines = explode(LF, $this->code);
             $count = sizeof($lines);
 
             do {
-                $tpl[$this->line] = '<?php $this->line='.($this->line + 1).';?>'.$this->parseLine($lines[$this->line]);
+                $tpl[$this->line] = '<?php $line='.($this->line + 1).';?>'.$this->parseLine($lines[$this->line]);
                 ++$this->line;
             } while($this->line < $count);
 
             $code = preg_replace('#\[^;]?>([\s]*)<\?php#', '$1', implode(LF, $tpl));
-            $code = preg_replace_callback("#\{([\-\w]+)\}#is",  [&$this, 'value'], $code);
+            $code = preg_replace_callback("#\{([\-\w]+)\}#is", [&$this, 'value'], $code);
 
 /*
-            To use css compression you need to download css-optimizer from https://github.com/Greenray/css-optimizer
+            To use css compression you need to download and include css-optimizer from https://github.com/Greenray/css-optimizer
 
             preg_match_all("#\<link rel=\"stylesheet\" type=\"text/css\" href=\"(.*?)\" media=\"screen\" /\>#is", $code, $matches);
             foreach($matches[1] as $key => $file) {
@@ -156,28 +171,29 @@ class TEMPLATE {
             $result = preg_replace_callback("#__(.*?)__#is", [&$this, 'translate'], $result);
             ob_end_clean();
             #
-            # Store the data in the cache
+            # Store the data in the cache if allowed
             #
             if ($this->options['cache_page']) $this->toCache($this->file, $result);
             $this->line = $old_line;
             $this->file = $old_file;
+            return $this->compact($result);
         }
-        return $this->compact($result);
-	}
+        return $result;
+    }
 
     /**
-	 * Parses a line of code.
+     * Parses a line of code.
      *
-	 * @param  string $code Line of code
-	 * @return string       Code transformed in php code
-	 */
-	private function parseLine($code) {
+     * @param  string $code Line of code
+     * @return string       Code transformed in php code
+     */
+    private function parseLine($code) {
         #
-		# Empty line
+        # Empty line
         #
-		if (!trim($code)) return $code;
+        if (!trim($code)) return $code;
         #
-		# Get template expressions
+        # Get template expressions
         #
         preg_match_all('#<!-- ([A-Z]+)+? *([ \S]*?) -->#', $code, $match, PREG_SET_ORDER);
         if (!empty($match)) {
@@ -211,13 +227,13 @@ class TEMPLATE {
             }
         }
         #
-		# Transform template variables to php code
+        # Transform template variables to php code
         # The templates are:
         # $var, $var.index        - will be converted to $this-vars[$var], $var['index'] - ex.: <h1>$var.title</h1>
         # [$var], [$var.index]    - will be converte to $this-vars[$var], $var['index']  - ex.: width:[$var.with]px
         # __$var_, __$var.index__ - will be translated
         #
-		$code = preg_replace_callback(
+        $code = preg_replace_callback(
             '#\[*\$(?:[\w]+\.)?[\w]*[^_\W]\]*#',
             function($match) {
                 return '<?php echo '.$this->createVar($match[0]).';?>';
@@ -225,24 +241,24 @@ class TEMPLATE {
             $code
         );
         #
-		# Transform saved template expressions to php code
+        # Transform saved template expressions to php code
         #
         foreach($this->temp as $key => $value) {
             $code = str_replace($key, $value, $code);
         }
         $this->temp = [];
         return $code;
-	}
+    }
 
     /**
-	 * Creates variable.
+     * Creates variable.
      *
-	 * @param  string $code Template basic code
-	 * @return string       PHP code
-	 */
-	private function createVar($code) {
+     * @param  string $code Template basic code
+     * @return string       PHP code
+     */
+    private function createVar($code) {
         $code = str_replace(['[', ']'], '', $code);
-		return preg_replace_callback(
+        return preg_replace_callback(
             '#\$(?:([\w]*)\.)?([\w]*)#',
             function($match) {
                 if (empty($match[1]))
@@ -251,75 +267,82 @@ class TEMPLATE {
             },
             $code
         );
-	}
+    }
 
     /**
-	 * Trasnforms the FOREACH structure in php code.
-     * T
-     *
-	 * @param  string $param Parameters for FOREACH structure
-	 * @return string        PHP code
-	 */
-	private function _foreach($param) {
-        $param = explode(' ', $param);
-        if (strpos($param[0], '.') !== FALSE) {
-            $values   = explode('.', $param[0]);
-            $array    = $values[0].'[\''.$values[1].'\']';
-            $param[0] = '$'.$values[1];
-        } else {
-            $array = $this->createVar($param[0]);
-        }
-        if (empty($params[1]))
-             return '<?php foreach('.$array.' as '.$param[0].') { ?>';
-        else return '<?php foreach('.$array.' as '.$param[0].' => '.$param[1].' { ?>';
-	}
-
-    /**
-	 * Transforms the IF structure in php code.
+     * Trasnforms the FOREACH structure in php code.
      * <pre>
      * The template is:
-     *   <!-- IF !empty($var) -->
+     *   <!-- FOREACH $array -->
+     *   <!-- FOREACH $array.index -->
+     *   <!-- CONTINUE -->
      * </pre>
-	 * @param  string  $code   Code for IF structure
-	 * @param  boolean $elseif Flag indicating if the structure is IF or ELSEIF
-	 * @return string          PHP code
-	 */
-	private function _if($code, $elseif) {
-		$code = $this->createVar($code);
-		$else = '';
-		if ($elseif) {
-			$else = 'else';
-			$code = '($this->line='.($this->line + 1).')&&'.$code;
-		}
-		return '<?php '.$else.'if ('.$code.') { ?>';
-	}
+     * @param  string $param Parameters for FOREACH structure
+     * @return string        PHP code
+     */
+    private function _foreach($param) {
+        if (strpos($param, '.') !== FALSE) {
+            $values = explode('.', $param);
+            $array  = $values[0].'[\''.$values[1].'\']';
+            $param  = '$'.$values[1];
+        } else {
+            $array = $this->createVar($param);
+        }
+        return '<?php foreach('.$array.' as '.$param.') { ?>';
+    }
 
     /**
-	 * Transforms the SWITCH structure in php code.
+     * Transforms the IF structure in php code.
+     * <pre>
+     * The template is:
+     *   <!-- IF $variable -->
+     *   <!-- IF $var1 == $var2 -->
+     *   <!-- IF !empty($varable) -->
+     *   <!-- ELSEIF $variable -->
+     *   <!-- ELSEIF $var1 == $var2 -->
+     *   <!-- ELSEIF !empty($variable) -->
+     *   <!-- ELSE -->
+     * </pre>
+     * @param  string  $code   Code for IF structure
+     * @param  boolean $elseif Flag indicating if the structure is IF or ELSEIF
+     * @return string          PHP code
+     */
+    private function _if($code, $elseif) {
+        $code = $this->createVar($code);
+        $else = '';
+        if ($elseif) {
+            $else = 'else';
+            $code = '($line='.($this->line + 1).')&&'.$code;
+        }
+        return '<?php '.$else.'if ('.$code.') { ?>';
+    }
+
+    /**
+     * Transforms the SWITCH structure in php code.
      * <pre>
      * The template is:
      *   <!-- SWITCH $var -->
      * </pre>
-	 * @param  string $param Code for the SWITCH structure
-	 * @return string        PHP code
-	 */
-	private function _switch($param) {
-		$param = $this->createVar($param);
-		return '<?php switch('.$param.') { ?>';
-	}
+     * @param  string $param Code for the SWITCH structure
+     * @return string        PHP code
+     */
+    private function _switch($param) {
+        $param = $this->createVar($param);
+        return '<?php switch('.$param.') { ?>';
+    }
 
     /**
-	 * Transforms the CASE structure in php code.
+     * Transforms the CASE structure in php code.
      * <pre>
      * The template is:
      *   <!-- CASE $var -->
      * </pre>
-	 * @param  string $param Parameter for CASE structure
-	 * @return string        PHP code
-	 */
-	private function _case($param) {
-		return '<?php case (($this->line='.($this->line + 1).')&&FALSE).'.$this->createVar($param).': ?>';
-	}
+     * @param  string $param Parameter for CASE structure
+     * @return string        PHP code
+     */
+    private function _case($param) {
+        return '<?php case (($line='.($this->line + 1).')&&FALSE).'.$this->createVar($param).': ?>';
+    }
 
     /**
      * Localization.
@@ -335,7 +358,7 @@ class TEMPLATE {
      * @return string        Parsed string
      */
     private function translate($match) {
-        return str_replace($match[0], (empty($this->translation[$match[1]]) ? $match[1] : $this->translation[$match[1]]), $match[0]);
+        return str_replace($match[0], (empty($this->languages[$match[1]]) ? $match[1] : $this->languages[$match[1]]), $match[0]);
     }
 
     /**
@@ -355,13 +378,13 @@ class TEMPLATE {
     }
 
     /**
-	 * Gets a data from the cache.
+     * Gets a data from the cache.
      *
-	 * @param  string $file Page name
+     * @param  string $file Page name
      * @return mixed        Page from cache
-	 */
-	public function getFromCache($file) {
-        $file  = md5($file);
+     */
+    public function getFromCache($file) {
+        $file = md5($file);
         if (file_exists(CACHE.$file)) {
             #
             # Visitor has changed website language
@@ -374,7 +397,7 @@ class TEMPLATE {
             }
         }
         return FALSE;
-	}
+    }
 
     /**
      * Compacts compiled template.
@@ -398,16 +421,16 @@ class TEMPLATE {
     }
 
     /**
-	 * Places the compiled data into cache.
+     * Places the compiled data into cache.
      *
-	 * @param string $file Page name
-	 * @param string $data Page to store in the cache
-	 */
-	public function toCache($file, $data) {
+     * @param string $file Page name
+     * @param string $data Page to store in the cache
+     */
+    public function toCache($file, $data) {
         $file = md5($file);
         $data = $this->compact($data);
         file_put_contents(CACHE.$file, $data, LOCK_EX);
-	}
+    }
 
     /**
      * Generates random string.
@@ -427,5 +450,14 @@ class TEMPLATE {
             $result .= $chars[mt_rand(0, $max_chars)];
         }
         return $result;
+    }
+
+    /**
+     * Shows an error message.
+     *
+     * @param string $msg Error message to output
+     */
+    public function error($msg) {
+        fwrite(STDERR, 'ERROR: '.$msg.LF);
     }
 }

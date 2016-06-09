@@ -1,21 +1,50 @@
 Template Compiler.
 ==================
 
-
-
 ## Feachures
 
 Handles special tags and replaces them with commands of the php interpreter.
+Transforms template variables to php variables.
 It is able recursively execute functions and directives:
 FOREACH, IF, ELSE, ELSEIF, SWITCH, CASE, BREAK, DEFAULT, INCLUDE, CONTINUE.
 
 There is a possibility of compressing and caching the result.
 
+To control the compilation used the HTML comment tags.
+This makes the template friendly and intuitive even for the inexperienced designer.
+
 ## Requirements
 
 This program requires PHP 5.4+
 
-## Examples
+## List of template functions
+
+<!-- FOREACH $array -->
+<!-- FOREACH $array.index -->
+<!-- CONTINUE -->
+<!-- IF $variable -->
+<!-- IF $var1 == $var2 -->
+<!-- IF !empty($varable) -->
+<!-- ELSEIF $variable -->
+<!-- ELSEIF $var1 == $var2 -->
+<!-- ELSEIF !empty($variable) -->
+<!-- ELSE -->
+<!-- SWITCH $variable -->
+<!-- CASE $variable -->
+<!-- BREAK -->
+<!-- DEFAULT -->
+<!-- INCLUDE filename -->
+<!-- END --> Closes FOREACH IF SWITCH
+
+## Template constants and variables
+
+{CONSTANT}
+$variable means $variable
+$variable.index means $variable['index']
+[$variable] or [$variable.index] is used in special case, ex. style="width:[$variable.width]px"
+__ $variable __ or __ Any word __ when you need translations into another language
+
+## Example
 
     <div class="header center">__Example__</div>
     <!-- INCLUDE menu -->
@@ -40,6 +69,7 @@ This program requires PHP 5.4+
 
 ## Result
 
+    <div class="header center">__Example__</div>
     <div class="main-menu center">
         <ul class="menu">
             <li>
