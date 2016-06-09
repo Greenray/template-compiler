@@ -39,9 +39,13 @@ This program requires PHP 5.4+
 ## Template constants and variables
 
 {CONSTANT}
+
 $variable means $variable
+
 $variable.index means $variable['index']
+
 [$variable] or [$variable.index] is used in special case, ex. style="width:[$variable.width]px"
+
 __ $variable __ or __ Any word __ when you need translations into another language
 
 ## Example
