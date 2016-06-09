@@ -158,7 +158,7 @@ class TEMPLATE {
 
             preg_match_all("#\<link rel=\"stylesheet\" type=\"text/css\" href=\"(.*?)\" media=\"screen\" /\>#is", $code, $matches);
             foreach($matches[1] as $key => $file) {
-                $CSS  = new CSS($this->options['css_cache']);
+                $CSS  = new CSS($this->options['cache_css']);
                 $code = str_replace($matches[0][$key], '<style type="text/css">'.$CSS->compress($file).'</style>', $code);
             }
 */
