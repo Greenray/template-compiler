@@ -19,22 +19,22 @@ This program requires PHP 5.4+
 
 ## List of template functions
 
-<!-- FOREACH $array -->
-<!-- FOREACH $array.index -->
-<!-- CONTINUE -->
-<!-- IF $variable -->
-<!-- IF $var1 == $var2 -->
-<!-- IF !empty($varable) -->
-<!-- ELSEIF $variable -->
-<!-- ELSEIF $var1 == $var2 -->
-<!-- ELSEIF !empty($variable) -->
-<!-- ELSE -->
-<!-- SWITCH $variable -->
-<!-- CASE $variable -->
-<!-- BREAK -->
-<!-- DEFAULT -->
-<!-- INCLUDE filename -->
-<!-- END --> Closes FOREACH IF SWITCH
+    <!-- FOREACH $array -->
+    <!-- FOREACH $array.index -->
+    <!-- CONTINUE -->
+    <!-- IF $variable -->
+    <!-- IF $var1 == $var2 -->
+    <!-- IF !empty($varable) -->
+    <!-- ELSEIF $variable -->
+    <!-- ELSEIF $var1 == $var2 -->
+    <!-- ELSEIF !empty($variable) -->
+    <!-- ELSE -->
+    <!-- SWITCH $variable -->
+    <!-- CASE $variable -->
+    <!-- BREAK -->
+    <!-- DEFAULT -->
+    <!-- INCLUDE filename -->
+    <!-- END --> Closes FOREACH IF SWITCH
 
 ## Template constants and variables
 
