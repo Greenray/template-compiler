@@ -38,7 +38,6 @@ class TEMPLATE {
         'BREAK'    => '<?php break;?>',
         'CONTINUE' => '<?php continue;?>',
         'DEFAULT'  => '<?php default: ?>',
-        'ELSE'     => '<?php } else { ?>',
         'END'      => '<?php } ?>'
     ];
 
@@ -207,7 +206,7 @@ class TEMPLATE {
                             $this->temp[$tmp] = str_replace($expr[0], $this->_if($expr[2], FALSE), $expr[0]);
                         break;
                         case 'ELSEIF':
-                            $this->temp[$tmp] = str_replace($expr[0], $this->_if($expr[2], TRUE), $expr[0]);
+                            $this->temp[$tmp] = str_replace($expr[0], '<?php } elseif ('.$expr[2].') { ?>', $expr[0]);
                         break;
                         case 'ELSE':
                             $this->temp[$tmp] = str_replace($expr[0], '<?php } else { $this->line='.($this->line + 1).';?>', $expr[0]);
@@ -292,30 +291,18 @@ class TEMPLATE {
     }
 
     /**
-     * Transforms the IF structure in php code.
+	 * Transforms the IF structure in php code.
      * <pre>
      * The template is:
-     *   <!-- IF $variable -->
-     *   <!-- IF $var1 == $var2 -->
-     *   <!-- IF !empty($varable) -->
-     *   <!-- ELSEIF $variable -->
-     *   <!-- ELSEIF $var1 == $var2 -->
-     *   <!-- ELSEIF !empty($variable) -->
-     *   <!-- ELSE -->
+     *   <!-- IF !empty($var) -->
      * </pre>
-     * @param  string  $code   Code for IF structure
-     * @param  boolean $elseif Flag indicating if the structure is IF or ELSEIF
-     * @return string          PHP code
-     */
-    private function _if($code, $elseif) {
-        $code = $this->createVar($code);
-        $else = '';
-        if ($elseif) {
-            $else = 'else';
-            $code = '($line='.($this->line + 1).')&&'.$code;
-        }
-        return '<?php '.$else.'if ('.$code.') { ?>';
-    }
+	 * @param  string $code Code for IF structure
+	 * @return string       PHP code
+	 */
+	private function _if ($code) {
+		$code = $this->createVar($code);
+		return '<?php if ('.$code.') { ?>';
+	}
 
     /**
      * Transforms the SWITCH structure in php code.

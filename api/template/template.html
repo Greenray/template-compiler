@@ -114,7 +114,7 @@
         <div class="details">Processing options</div>
         <hr />
             <div class="location">template.class.php at line 37</div>
-        <pre class="arguments" id="statements">private  array <strong><span class="green">$statements</span></strong> = [<br />        <span class="red">"BREAK"</span>    => <span class="red">"<?php break;?>"</span>,<br />        <span class="red">"CONTINUE"</span> => <span class="red">"<?php continue;?>"</span>,<br />        <span class="red">"DEFAULT"</span>  => <span class="red">"<?php default: ?>"</span>,<br />        <span class="red">"ELSE"</span>     => <span class="red">"<?php } else { ?>"</span>,<br />        <span class="red">"END"</span>      => <span class="red">"<?php } ?>"</span><br />    ]</pre>
+        <pre class="arguments" id="statements">private  array <strong><span class="green">$statements</span></strong> = [<br />        <span class="red">"BREAK"</span>    => <span class="red">"<?php break;?>"</span>,<br />        <span class="red">"CONTINUE"</span> => <span class="red">"<?php continue;?>"</span>,<br />        <span class="red">"DEFAULT"</span>  => <span class="red">"<?php default: ?>"</span>,<br />        <span class="red">"END"</span>      => <span class="red">"<?php } ?>"</span><br />    ]</pre>
         <div class="details">Template statements</div>
         <hr />
             <div class="location">template.class.php at line 40</div>
@@ -129,8 +129,7 @@
     <div class="location">template.class.php at line 51</div>
     <code class="arguments" id="construct">public  void <strong>construct</strong>(<span class="lilac">array</span> <span class="blue">$template</span>, <span class="lilac">array</span> <span class="blue">$options</span>)</code>
     <div class="details">
-            <span class="bold">include</span> LANGUAGES.$this->options[<span class="red">'language'</span>].<span class="red">'.php'</span>
-            <p class="description">Class constructor.</p>
+            <span class="bold">include</span> LANGUAGES.$this->options[<span class="red">'language'</span>].<span class="red">'.php'</span><br/>            <p class="description">Class constructor.</p>
         <div class="finfo">
     <table class="hid">
             <tr>
@@ -202,7 +201,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 183</div>
+            <div class="location">template.class.php at line 184</div>
         <code class="arguments" id="parseLine">private  string <strong>parseLine</strong> (<span class="lilac">string</span> <span class="blue">$code</span>)</code>
         <div class="details">
                     <p class="description">Parses a line of code.</p>
@@ -223,7 +222,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 252</div>
+            <div class="location">template.class.php at line 253</div>
         <code class="arguments" id="createVar">private  string <strong>createVar</strong> (<span class="lilac">string</span> <span class="blue">$code</span>)</code>
         <div class="details">
                     <p class="description">Creates variable.</p>
@@ -244,7 +243,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 276</div>
+            <div class="location">template.class.php at line 277</div>
         <code class="arguments" id="_foreach">private  string <strong>_foreach</strong> (<span class="lilac">string</span> <span class="blue">$param</span>)</code>
         <div class="details">
                     <p class="description">Trasnforms the FOREACH structure in php code.<br /> <pre><br /> The template is:<br />   <!-- FOREACH $array --><br />   <!-- FOREACH $array.index --><br />   <!-- CONTINUE --><br /> </pre></p>
@@ -265,10 +264,10 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 303</div>
-        <code class="arguments" id="_if">private  string <strong>_if</strong> (<span class="lilac">string</span> <span class="blue">$code</span>, <span class="lilac">boolean</span> <span class="blue">$elseif</span>)</code>
+            <div class="location">template.class.php at line 297</div>
+        <code class="arguments" id="_if">private  string <strong>_if</strong> (<span class="lilac">string</span> <span class="blue">$code</span>)</code>
         <div class="details">
-                    <p class="description">Transforms the IF structure in php code.<br /> <pre><br /> The template is:<br />   <!-- IF $variable --><br />   <!-- IF $var1 == $var2 --><br />   <!-- IF !empty($varable) --><br />   <!-- ELSEIF $variable --><br />   <!-- ELSEIF $var1 == $var2 --><br />   <!-- ELSEIF !empty($variable) --><br />   <!-- ELSE --><br /> </pre></p>
+                    <p class="description">Transforms the IF structure in php code.<br /> <pre><br /> The template is:<br />   <!-- IF !empty($var) --><br /> </pre></p>
             <div class="finfo">
     <table class="hid">
             <tr>
@@ -276,12 +275,6 @@
             <td class="hid right w_100 lilac">string</td>
                             <td class="hid blue w_100">$code</td>
                 <td class="hid">Code for IF structure</td>
-                    </tr>
-            <tr>
-            <td class="hid left w_100">&nbsp</td>
-            <td class="hid right w_100 lilac">boolean</td>
-                            <td class="hid blue w_100">$elseif</td>
-                <td class="hid">Flag indicating if the structure is IF or ELSEIF</td>
                     </tr>
             <tr>
             <td class="hid left w_100">Return</td>
@@ -292,7 +285,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 322</div>
+            <div class="location">template.class.php at line 311</div>
         <code class="arguments" id="_switch">private  string <strong>_switch</strong> (<span class="lilac">string</span> <span class="blue">$param</span>)</code>
         <div class="details">
                     <p class="description">Transforms the SWITCH structure in php code.<br /> <pre><br /> The template is:<br />   <!-- SWITCH $var --><br /> </pre></p>
@@ -313,7 +306,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 336</div>
+            <div class="location">template.class.php at line 325</div>
         <code class="arguments" id="_case">private  string <strong>_case</strong> (<span class="lilac">string</span> <span class="blue">$param</span>)</code>
         <div class="details">
                     <p class="description">Transforms the CASE structure in php code.<br /> <pre><br /> The template is:<br />   <!-- CASE $var --><br /> </pre></p>
@@ -334,7 +327,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 353</div>
+            <div class="location">template.class.php at line 342</div>
         <code class="arguments" id="translate">private  string <strong>translate</strong> (<span class="lilac">array</span> <span class="blue">$match</span>)</code>
         <div class="details">
                     <p class="description">Localization.<br /> <pre><br /> The template is:<br />   string<br /> </pre><br /> Array variable $matches contains:<br />  - $matches[0] = part of template between control structures including them;<br />  - $matches[1] = part of template between control structures excluding them.</p>
@@ -355,7 +348,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 367</div>
+            <div class="location">template.class.php at line 356</div>
         <code class="arguments" id="value">private  string <strong>value</strong> (<span class="lilac">array</span> <span class="blue">$match</span>)</code>
         <div class="details">
                     <p class="description">Replaces constants and global variables with their values.<br /> <pre><br /> The template is:<br />   {CONST} - global constant<br /> </pre></p>
@@ -376,7 +369,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 379</div>
+            <div class="location">template.class.php at line 368</div>
         <code class="arguments" id="getFromCache">public  mixed <strong>getFromCache</strong> (<span class="lilac">string</span> <span class="blue">$file</span>)</code>
         <div class="details">
                     <p class="description">Gets a data from the cache.</p>
@@ -397,7 +390,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 401</div>
+            <div class="location">template.class.php at line 390</div>
         <code class="arguments" id="compact">private  string <strong>compact</strong> (<span class="lilac">string</span> <span class="blue">$data</span>)</code>
         <div class="details">
                     <p class="description">Compacts compiled template.</p>
@@ -418,7 +411,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 422</div>
+            <div class="location">template.class.php at line 411</div>
         <code class="arguments" id="toCache">public  void <strong>toCache</strong> (<span class="lilac">string</span> <span class="blue">$file</span>, <span class="lilac">string</span> <span class="blue">$data</span>)</code>
         <div class="details">
                     <p class="description">Places the compiled data into cache.</p>
@@ -440,7 +433,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 434</div>
+            <div class="location">template.class.php at line 423</div>
         <code class="arguments" id="randomString">private  string <strong>randomString</strong> (<span class="lilac">integer</span> <span class="blue">$num_chars</span>)</code>
         <div class="details">
                     <p class="description">Generates random string.</p>
@@ -461,7 +454,7 @@
 </div>
         </div>
         <hr />
-            <div class="location">template.class.php at line 453</div>
+            <div class="location">template.class.php at line 442</div>
         <code class="arguments" id="error">public  void <strong>error</strong> (<span class="lilac">string</span> <span class="blue">$msg</span>)</code>
         <div class="details">
                     <p class="description">Shows an error message.</p>

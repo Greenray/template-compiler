@@ -10,7 +10,7 @@ FOREACH, IF, ELSE, ELSEIF, SWITCH, CASE, BREAK, DEFAULT, INCLUDE, CONTINUE.
 
 There is a possibility of compressing and caching the result.
 
-To control the compilation used the HTML comment tags.
+To control the compilation uses the HTML comment tags.
 This makes the template friendly and intuitive even for the inexperienced designer.
 
 ## Requirements
