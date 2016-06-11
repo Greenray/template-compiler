@@ -37,6 +37,7 @@ class TEMPLATE {
     private $statements = [
         'BREAK'    => '<?php break;?>',
         'CONTINUE' => '<?php continue;?>',
+        'ELSE'     => '<?php } else { ?>',
         'DEFAULT'  => '<?php default: ?>',
         'END'      => '<?php } ?>'
     ];
@@ -145,7 +146,7 @@ class TEMPLATE {
             $count = sizeof($lines);
 
             do {
-                $tpl[$this->line] = '<?php $line='.($this->line + 1).';?>'.$this->parseLine($lines[$this->line]);
+                $tpl[$this->line] = '<?php $this->line='.($this->line + 1).';?>'.$this->parseLine($lines[$this->line]);
                 ++$this->line;
             } while($this->line < $count);
 
@@ -328,7 +329,7 @@ class TEMPLATE {
      * @return string        PHP code
      */
     private function _case($param) {
-        return '<?php case (($line='.($this->line + 1).')&&FALSE).'.$this->createVar($param).': ?>';
+        return '<?php case (($this->line='.($this->line + 1).')&&FALSE).'.$this->createVar($param).': ?>';
     }
 
     /**

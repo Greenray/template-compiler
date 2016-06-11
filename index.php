@@ -53,13 +53,11 @@ unset ($filename);
 
 $menu    = json_decode(file_get_contents('menu.json'), TRUE);
 $content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam arcu ligula, faucibus eu imperdiet eu, bibendum sit amet augue. Sed turpis sem, interdum sit amet egestas a, mattis non libero. Suspendisse tristique nisi sed justo accumsan vel mattis nulla fermentum. Etiam varius est id mi fermentum aliquam.';
-for ($i = 0; $i < 10; ++$i) {
-    $digits[] = $i;
-}
 
 $TEMPLATE = new TEMPLATE('main', $options);
 $TEMPLATE->set('class',     'content');
-$TEMPLATE->set('title',     'Included content');
+//$TEMPLATE->set('title',     'Included content');
+$TEMPLATE->set('title',     'Content');
 $TEMPLATE->set('size',      '2');
 $TEMPLATE->set('content',   $content);
 $TEMPLATE->set('languages', $languages);
