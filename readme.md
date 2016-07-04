@@ -102,7 +102,7 @@ This program requires PHP 5.4+
 
 After finishing (removing newlines) the data file will be placed in one line.
 
-The original code: (https://github.com/Greenray/css-optimizer).
+The original code: (https://github.com/Greenray/template-compiler).
 
 #### COPYRIGHT AND LICENSE
 
