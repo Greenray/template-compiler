@@ -38,21 +38,25 @@ This program requires PHP 5.4+
 
 ## Template constants and variables
 
-{CONSTANT}
+**{CONSTANT}** means **CONSTANT**
 
-$variable means $variable
+**$variable** means **$variable**
 
-$variable.index means $variable['index']
+**$variable.index** means **$variable['index']**
 
-[$variable] or [$variable.index] is used in special case, ex. style="width:[$variable.width]px"
+**[$variable]** or **[$variable.index]** is used in special case, ex. **style="width:[$variable.width]px"**
 
-__ $variable __ or __ Any word __ when you need translations into another language
+**\__$variable\__** or **\__Any words\__** when you need translations into another language
 
 ## Example
 
     <div class="header center">__Example__</div>
-    <!-- INCLUDE menu -->
-    <div class="page">...
+        <!-- INCLUDE menu -->
+    <div class="page">
+    ...
+    </div>
+
+    This is template to include
 
     <div class="main-menu center">
         <ul class="menu">
@@ -73,7 +77,7 @@ __ $variable __ or __ Any word __ when you need translations into another langua
 
 ## Result
 
-    <div class="header center">__Example__</div>
+    <div class="header center">Example</div>
     <div class="main-menu center">
         <ul class="menu">
             <li>
@@ -83,16 +87,18 @@ __ $variable __ or __ Any word __ when you need translations into another langua
                 <a href="#">Publications</a>
                     <ul>
                         <li>
-                            <a href="#" style="width:112px">News</a>
+                            <a href="#" style="width:100px">News</a>
                         </li>
                         <li>
-                            <a href="#" style="width:112px">Articles</a>
+                            <a href="#" style="width:200px">Articles</a>
                         </li>
                     </ul>
                 </li>
         </ul>
     </div>
-    <div class="page">...
+    <div class="page">
+    ...
+    </div>
 
 After finishing (removing newlines) the data file will be placed in one line.
 

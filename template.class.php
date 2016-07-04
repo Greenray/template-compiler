@@ -87,11 +87,11 @@ class TEMPLATE {
                 #
                 $this->code = preg_replace("#<\?php(.*?)\?>\n{1,}#is", '', $this->code);
             } else {
-                $this->error('Cannot read the template file '.$filename);
+                $this->error('Cannot read the template file '.$template);
                 exit;
             }
         } else {
-            $this->error('Cannot find the template file '.$filename);
+            $this->error('Cannot find the template file '.$template);
             exit;
         }
     }
@@ -130,6 +130,7 @@ class TEMPLATE {
             #
             # The name of the include file without extension
             #
+            $includes = [];
             preg_match_all('#<!-- INCLUDE (.+?) -->#', $this->code, $includes, PREG_SET_ORDER);
             if (!empty($includes)) {
                 foreach($includes as $key => $file) {
@@ -138,7 +139,7 @@ class TEMPLATE {
                         $data = preg_replace("#<\?php(.*?)\?>\n{1,}#is", '', $data);
                         $this->code = str_replace($file[0], $data, $this->code);
                     } else {
-                        $this->error('Cannot find the template file '.$filename.' for including');
+                        $this->error('Cannot find the template file '.$file[1].$this->options['extension'].' for including');
                     }
                 }
             }
@@ -195,6 +196,7 @@ class TEMPLATE {
         #
         # Get template expressions
         #
+        $match = [];
         preg_match_all('#<!-- ([A-Z]+)+? *([ \S]*?) -->#', $code, $match, PREG_SET_ORDER);
         if (!empty($match)) {
             foreach($match as $key => $expr) {
@@ -228,10 +230,6 @@ class TEMPLATE {
         }
         #
         # Transform template variables to php code
-        # The templates are:
-        # $var, $var.index        - will be converted to $this-vars[$var], $var['index'] - ex.: <h1>$var.title</h1>
-        # [$var], [$var.index]    - will be converte to $this-vars[$var], $var['index']  - ex.: width:[$var.with]px
-        # __$var_, __$var.index__ - will be translated
         #
         $code = preg_replace_callback(
             '#\[*\$(?:[\w]+\.)?[\w]*[^_\W]\]*#',
@@ -271,12 +269,7 @@ class TEMPLATE {
 
     /**
      * Trasnforms the FOREACH structure in php code.
-     * <pre>
-     * The template is:
-     *   <!-- FOREACH $array -->
-     *   <!-- FOREACH $array.index -->
-     *   <!-- CONTINUE -->
-     * </pre>
+     *
      * @param  string $param Parameters for FOREACH structure
      * @return string        PHP code
      */
@@ -293,10 +286,7 @@ class TEMPLATE {
 
     /**
 	 * Transforms the IF structure in php code.
-     * <pre>
-     * The template is:
-     *   <!-- IF !empty($var) -->
-     * </pre>
+     *
 	 * @param  string $code Code for IF structure
 	 * @return string       PHP code
 	 */
@@ -307,10 +297,7 @@ class TEMPLATE {
 
     /**
      * Transforms the SWITCH structure in php code.
-     * <pre>
-     * The template is:
-     *   <!-- SWITCH $var -->
-     * </pre>
+     *
      * @param  string $param Code for the SWITCH structure
      * @return string        PHP code
      */
@@ -321,10 +308,7 @@ class TEMPLATE {
 
     /**
      * Transforms the CASE structure in php code.
-     * <pre>
-     * The template is:
-     *   <!-- CASE $var -->
-     * </pre>
+     *
      * @param  string $param Parameter for CASE structure
      * @return string        PHP code
      */
@@ -334,10 +318,7 @@ class TEMPLATE {
 
     /**
      * Localization.
-     * <pre>
-     * The template is:
-     *   __string__
-     * </pre>
+     *
      * Array variable $matches contains:
      *  - $matches[0] = part of template between control structures including them;
      *  - $matches[1] = part of template between control structures excluding them.
@@ -351,10 +332,6 @@ class TEMPLATE {
 
     /**
      * Replaces constants and global variables with their values.
-     * <pre>
-     * The template is:
-     *   {CONST} - global constant
-     * </pre>
      *
      * @param  array  $match Matches for constants
      * @return string        Parsed string
@@ -403,7 +380,6 @@ class TEMPLATE {
             # Remove newline characters and tabs
             #
             return str_replace(["\r\n", "\r", "\n", "\t"], '', $data);
-            return $data;
         }
         return $data;
     }

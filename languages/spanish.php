@@ -23,3 +23,4 @@ $lang['Operating system Linux'] = 'Sistema operativo Linux';
 $lang['Operating system Windows'] = 'Sistema operativo Windows';
 $lang['Publications'] = 'Publicaciones';
 $lang['Test'] = 'Prueba';
+$lang['This text is included'] = 'Este texto está incluido';
