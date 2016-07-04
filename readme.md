@@ -103,4 +103,19 @@ This program requires PHP 5.4+
 After finishing (removing newlines) the data file will be placed in one line.
 
 The original code: (https://github.com/Greenray/css-optimizer).
+
+#### COPYRIGHT AND LICENSE
+
 Copyright (C) 2016 Victor Nabatov <greenray.spb@gmail.com>
+
+This program is free software.
+You can redistribute it and/or modify it under the terms of the
+[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/legalcode) .
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Эта программа является свободной.
+Вы можете распространять и/или модифицировать ее в соответствии c условиями
+[Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/legalcode) .
+Эта программа распространяется в надежде что она будет полезной, но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ;
+даже без подразумеваемых гарантий КОММЕРЧЕСКОЙ ЦЕННОСТИ или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ.
