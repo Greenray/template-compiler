@@ -2,7 +2,7 @@
 html,body,abbr,b,blockquote,caption,code,dd,div,dl,dt,em,footer,h1,h2,h3,h4,h5,h6,
 header,img,li,label,nav,ol,p,pre,small,span,strong,sub,sup,table,tbody,
 td,th,tr,ul { background: transparent; border: 0; margin: 0; outline: 0; padding: 0; }
-body        { background: #fff; color: #000; font: 12px normal arial, helvetica, verdana, sans-serif; line-height: 1; padding: 0 0 0 3px; }
+body        { background: #fff; color: #000; font: 12px normal arial, helvetica, verdana, sans-serif; line-height: 1.2; padding: 0 0 0 3px; }
 a           { background: transparent; color: #00f; font-size: 100%; margin: 0; padding: 0; text-decoration: none; }
 abbr[title] { border-bottom: 1px dotted; cursor: help; }
 html, body  { height: 100%; width: 100%; }
@@ -45,7 +45,7 @@ input,select  { vertical-align: middle; }
 nav ul        { list-style: none; }
 nav           { display: block; }
 ol, ul        { margin-left: 30px; }
-pre, code     { font-family: monospace;; }
+pre, code     { font-family: monospace; }
 pre.tree      { margin: 10px 0 10px 100px; }
 table, th, td { border: 1px solid #000; }
 td            { padding: 2px 4px; }
@@ -56,7 +56,6 @@ table.hid     { padding: 5px; width: 100%; }
 th,
 #details_globals, #details_functions, #details_fields, #details_constructor, #details_constants,
 #details_methods { background: #ccf; font-size: 120%; padding: 2px 15px; text-align: left; }
-p                { margin-left: 10px; }
 p.list           { margin-left: 0px; }
 code.arguments,
 p.arguments,
